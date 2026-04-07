@@ -1,0 +1,91 @@
+freshrss:
+  url: "http://freshrss.example.com"  # URL of your FreshRSS instance
+  username: "your-freshrss-username"
+  password: "your-freshrss-api-password"  # API password (set in FreshRSS profile, NOT login password)
+  # Create a label with this exact name in FreshRSS — apply it to articles you don't want
+  not_relevant_label: "not-relevant"
+
+ollama:
+  url: "http://localhost:11434"        # Ollama API endpoint
+  model: "gemma4:e2b"                  # Any model available in your Ollama instance
+  relevance_threshold: 6               # 1-10; articles scoring below this are filtered out
+
+# How often each loop runs
+intervals:
+  filter_minutes: 5                    # filter new unread articles
+  feedback_minutes: 60                 # process stars and not-relevant labels
+  discovery_hours: 24                  # surface adjacent topic suggestions
+
+# Port for the local suggestions RSS feed
+# Bot should run on the same machine as FreshRSS — subscribe to http://localhost:8765/suggestions.rss
+suggestions_feed_port: 8765
+
+# Feedback loop tuning
+feedback:
+  star_weight_boost: 0.2               # how much to raise a topic's weight per starred article
+  not_relevant_weight_penalty: 0.15    # how much to lower a topic's weight per not-relevant label
+  max_topic_weight: 3.0
+  min_topic_weight: 0.1
+
+filter:
+  max_items_per_run: 50                # cap per loop run to avoid hammering Ollama on a big backlog
+  skip_older_than_days: 7              # ignore articles older than this (raise to 30 on first run)
+
+  keyword_blocklist:
+    # --- Political noise (add/remove to taste) ---
+    - "MAGA"
+    - "QAnon"
+    - "culture war"
+    - "woke"
+    - "anti-woke"
+    - "insurrection"
+
+    # --- Tabloid / celebrity ---
+    - "kardashian"
+    - "reality TV"
+    - "The Bachelor"
+
+    # --- Recipes (food trends yes, recipes no) ---
+    - "recipe"
+    - "how to cook"
+    - "prep time:"
+    - "ingredients:"
+    - "tablespoon"
+    - "preheat oven"
+    - "serving size"
+
+    # --- Crypto hype ---
+    - "HODL"
+    - "rug pull"
+    - "NFT drop"
+    - "bitcoin to the moon"
+    - "crypto to the moon"
+
+interests:
+  # This text is included verbatim in the Ollama relevance prompt.
+  # Be specific — the more detail you give, the better the scoring.
+  profile: |
+    Describe yourself and your interests here. The more specific you are,
+    the better Ollama can score article relevance for you.
+    Example: I'm a software engineer interested in distributed systems,
+    Linux, self-hosting, and mechanical keyboards.
+
+  # Topic weights shape the Ollama scoring prompt and evolve over time via feedback.
+  # Scale: 1.0 = baseline, higher = more important to you.
+  # The bot will tune these as you star / label articles.
+  topics:
+    - name: "AI and machine learning"
+      weight: 1.5
+    - name: "Linux kernel and distributions"
+      weight: 1.3
+    - name: "open source software"
+      weight: 1.3
+    - name: "self-hosting and homelab"
+      weight: 1.5
+    - name: "cybersecurity and infosec"
+      weight: 1.3
+    - name: "software engineering and architecture"
+      weight: 1.2
+    - name: "Docker and containers"
+      weight: 1.1
+    # Add more topics as needed — weights between 0.1 and 3.0

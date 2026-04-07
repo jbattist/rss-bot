@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>rss-bot starter feeds</title>
+  </head>
+  <body>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         AI & Machine Learning
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="AI &amp; Machine Learning" title="AI &amp; Machine Learning">
+      <outline type="rss" text="Google AI Blog" title="Google AI Blog"
+        xmlUrl="https://blog.research.google/feeds/posts/default" htmlUrl="https://blog.research.google"/>
+      <outline type="rss" text="OpenAI Blog" title="OpenAI Blog"
+        xmlUrl="https://openai.com/blog/rss.xml" htmlUrl="https://openai.com/blog"/>
+      <outline type="rss" text="DeepMind Blog" title="DeepMind Blog"
+        xmlUrl="https://deepmind.google/blog/rss.xml" htmlUrl="https://deepmind.google/blog"/>
+      <outline type="rss" text="Hugging Face Blog" title="Hugging Face Blog"
+        xmlUrl="https://huggingface.co/blog/feed.xml" htmlUrl="https://huggingface.co/blog"/>
+      <outline type="rss" text="The Gradient" title="The Gradient"
+        xmlUrl="https://thegradient.pub/rss/" htmlUrl="https://thegradient.pub"/>
+      <outline type="rss" text="BAIR Blog" title="BAIR Blog"
+        xmlUrl="https://bair.berkeley.edu/blog/feed.xml" htmlUrl="https://bair.berkeley.edu/blog"/>
+      <outline type="rss" text="Ahead of AI" title="Ahead of AI"
+        xmlUrl="https://magazine.sebastianraschka.com/feed" htmlUrl="https://magazine.sebastianraschka.com"/>
+      <outline type="rss" text="Simon Willison's Weblog" title="Simon Willison's Weblog"
+        xmlUrl="https://simonwillison.net/atom/everything/" htmlUrl="https://simonwillison.net"/>
+      <outline type="rss" text="Andrej Karpathy Blog" title="Andrej Karpathy Blog"
+        xmlUrl="https://karpathy.github.io/feed.xml" htmlUrl="https://karpathy.github.io"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Tech & Software Engineering
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Tech &amp; Software Engineering" title="Tech &amp; Software Engineering">
+      <outline type="rss" text="Hacker News (Top Stories)" title="Hacker News (Top Stories)"
+        xmlUrl="https://news.ycombinator.com/rss" htmlUrl="https://news.ycombinator.com"/>
+      <outline type="rss" text="Lobsters" title="Lobsters"
+        xmlUrl="https://lobste.rs/rss" htmlUrl="https://lobste.rs"/>
+      <outline type="rss" text="Ars Technica" title="Ars Technica"
+        xmlUrl="https://arstechnica.com/feed/" htmlUrl="https://arstechnica.com"/>
+      <outline type="rss" text="The Register" title="The Register"
+        xmlUrl="https://www.theregister.com/headlines.atom" htmlUrl="https://www.theregister.com"/>
+      <outline type="rss" text="The New Stack" title="The New Stack"
+        xmlUrl="https://thenewstack.io/feed/" htmlUrl="https://thenewstack.io"/>
+      <outline type="rss" text="InfoQ" title="InfoQ"
+        xmlUrl="https://feed.infoq.com/" htmlUrl="https://www.infoq.com"/>
+      <outline type="rss" text="Martin Fowler" title="Martin Fowler"
+        xmlUrl="https://martinfowler.com/feed.atom" htmlUrl="https://martinfowler.com"/>
+      <outline type="rss" text="Increment Magazine" title="Increment Magazine"
+        xmlUrl="https://increment.com/feed.xml" htmlUrl="https://increment.com"/>
+      <outline type="rss" text="ACM Queue" title="ACM Queue"
+        xmlUrl="https://queue.acm.org/rss/feeds/queuecontent.xml" htmlUrl="https://queue.acm.org"/>
+      <outline type="rss" text="Stack Overflow Blog" title="Stack Overflow Blog"
+        xmlUrl="https://stackoverflow.blog/feed/" htmlUrl="https://stackoverflow.blog"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Linux & Open Source
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Linux &amp; Open Source" title="Linux &amp; Open Source">
+      <outline type="rss" text="LWN.net" title="LWN.net"
+        xmlUrl="https://lwn.net/headlines/rss" htmlUrl="https://lwn.net"/>
+      <outline type="rss" text="Phoronix" title="Phoronix"
+        xmlUrl="https://www.phoronix.com/rss.php" htmlUrl="https://www.phoronix.com"/>
+      <outline type="rss" text="It's FOSS" title="It's FOSS"
+        xmlUrl="https://itsfoss.com/feed/" htmlUrl="https://itsfoss.com"/>
+      <outline type="rss" text="OMG! Ubuntu" title="OMG! Ubuntu"
+        xmlUrl="https://www.omgubuntu.co.uk/feed" htmlUrl="https://www.omgubuntu.co.uk"/>
+      <outline type="rss" text="Linux Weekly News Kernel" title="Linux Weekly News Kernel"
+        xmlUrl="https://lwn.net/headlines/Features" htmlUrl="https://lwn.net/kernel"/>
+      <outline type="rss" text="Opensource.com" title="Opensource.com"
+        xmlUrl="https://opensource.com/feed" htmlUrl="https://opensource.com"/>
+      <outline type="rss" text="Linux Journal" title="Linux Journal"
+        xmlUrl="https://www.linuxjournal.com/node/feed" htmlUrl="https://www.linuxjournal.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Self-Hosting & Homelab
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Self-Hosting &amp; Homelab" title="Self-Hosting &amp; Homelab">
+      <outline type="rss" text="r/selfhosted" title="r/selfhosted"
+        xmlUrl="https://www.reddit.com/r/selfhosted/.rss" htmlUrl="https://www.reddit.com/r/selfhosted"/>
+      <outline type="rss" text="r/homelab" title="r/homelab"
+        xmlUrl="https://www.reddit.com/r/homelab/.rss" htmlUrl="https://www.reddit.com/r/homelab"/>
+      <outline type="rss" text="LinuxServer.io Blog" title="LinuxServer.io Blog"
+        xmlUrl="https://blog.linuxserver.io/feed/" htmlUrl="https://blog.linuxserver.io"/>
+      <outline type="rss" text="Noted.lol" title="Noted.lol"
+        xmlUrl="https://noted.lol/feed/" htmlUrl="https://noted.lol"/>
+      <outline type="rss" text="Jeff Geerling Blog" title="Jeff Geerling Blog"
+        xmlUrl="https://www.jeffgeerling.com/blog.xml" htmlUrl="https://www.jeffgeerling.com"/>
+      <outline type="rss" text="Serve the Home" title="Serve the Home"
+        xmlUrl="https://www.servethehome.com/feed/" htmlUrl="https://www.servethehome.com"/>
+      <outline type="rss" text="Perfect Media Server" title="Perfect Media Server"
+        xmlUrl="https://perfectmediaserver.com/feed_rss_created.xml" htmlUrl="https://perfectmediaserver.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Security & Privacy
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Security &amp; Privacy" title="Security &amp; Privacy">
+      <outline type="rss" text="Krebs on Security" title="Krebs on Security"
+        xmlUrl="https://krebsonsecurity.com/feed/" htmlUrl="https://krebsonsecurity.com"/>
+      <outline type="rss" text="Schneier on Security" title="Schneier on Security"
+        xmlUrl="https://www.schneier.com/feed/atom/" htmlUrl="https://www.schneier.com"/>
+      <outline type="rss" text="EFF Deeplinks" title="EFF Deeplinks"
+        xmlUrl="https://www.eff.org/rss/updates.xml" htmlUrl="https://www.eff.org/deeplinks"/>
+      <outline type="rss" text="The Hacker News" title="The Hacker News"
+        xmlUrl="https://feeds.feedburner.com/TheHackersNews" htmlUrl="https://thehackernews.com"/>
+      <outline type="rss" text="Troy Hunt Blog" title="Troy Hunt Blog"
+        xmlUrl="https://www.troyhunt.com/rss/" htmlUrl="https://www.troyhunt.com"/>
+      <outline type="rss" text="Risky Business" title="Risky Business"
+        xmlUrl="https://risky.biz/feeds/risky-business/" htmlUrl="https://risky.biz"/>
+      <outline type="rss" text="CISA Alerts" title="CISA Alerts"
+        xmlUrl="https://www.cisa.gov/uscert/ncas/alerts.xml" htmlUrl="https://www.cisa.gov/news-events/cybersecurity-advisories"/>
+      <outline type="rss" text="Google Project Zero" title="Google Project Zero"
+        xmlUrl="https://googleprojectzero.blogspot.com/feeds/posts/default" htmlUrl="https://googleprojectzero.blogspot.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         CTO / Engineering Leadership
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="CTO &amp; Engineering Leadership" title="CTO &amp; Engineering Leadership">
+      <outline type="rss" text="Will Larson (Irrational Exuberance)" title="Will Larson (Irrational Exuberance)"
+        xmlUrl="https://lethain.com/feeds/" htmlUrl="https://lethain.com"/>
+      <outline type="rss" text="High Growth Engineering" title="High Growth Engineering"
+        xmlUrl="https://newsletter.pragmaticengineer.com/feed" htmlUrl="https://newsletter.pragmaticengineer.com"/>
+      <outline type="rss" text="The Pragmatic Engineer" title="The Pragmatic Engineer"
+        xmlUrl="https://blog.pragmaticengineer.com/rss/" htmlUrl="https://blog.pragmaticengineer.com"/>
+      <outline type="rss" text="charity.wtf" title="charity.wtf"
+        xmlUrl="https://charity.wtf/feed/" htmlUrl="https://charity.wtf"/>
+      <outline type="rss" text="Dan Luu" title="Dan Luu"
+        xmlUrl="https://danluu.com/atom.xml" htmlUrl="https://danluu.com"/>
+      <outline type="rss" text="Gergely Orosz" title="Gergely Orosz"
+        xmlUrl="https://newsletter.pragmaticengineer.com/feed" htmlUrl="https://newsletter.pragmaticengineer.com"/>
+      <outline type="rss" text="StaffEng" title="StaffEng"
+        xmlUrl="https://staffeng.com/feed.xml" htmlUrl="https://staffeng.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Microsoft
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Microsoft" title="Microsoft">
+      <outline type="rss" text="Microsoft Developer Blogs" title="Microsoft Developer Blogs"
+        xmlUrl="https://devblogs.microsoft.com/feed/" htmlUrl="https://devblogs.microsoft.com"/>
+      <outline type="rss" text="Microsoft Tech Community" title="Microsoft Tech Community"
+        xmlUrl="https://techcommunity.microsoft.com/plugins/custom/microsoft/o365/custom-blog-rss?tid=-1&amp;tg=0&amp;typ=0&amp;size=10" htmlUrl="https://techcommunity.microsoft.com"/>
+      <outline type="rss" text="Thurrott.com" title="Thurrott.com"
+        xmlUrl="https://www.thurrott.com/feed" htmlUrl="https://www.thurrott.com"/>
+      <outline type="rss" text="Windows Central" title="Windows Central"
+        xmlUrl="https://www.windowscentral.com/rss.xml" htmlUrl="https://www.windowscentral.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Android & Gadgets
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Android &amp; Gadgets" title="Android &amp; Gadgets">
+      <outline type="rss" text="Android Police" title="Android Police"
+        xmlUrl="https://www.androidpolice.com/feed/" htmlUrl="https://www.androidpolice.com"/>
+      <outline type="rss" text="9to5Google" title="9to5Google"
+        xmlUrl="https://9to5google.com/feed/" htmlUrl="https://9to5google.com"/>
+      <outline type="rss" text="Android Authority" title="Android Authority"
+        xmlUrl="https://www.androidauthority.com/feed/" htmlUrl="https://www.androidauthority.com"/>
+      <outline type="rss" text="The Verge" title="The Verge"
+        xmlUrl="https://www.theverge.com/rss/index.xml" htmlUrl="https://www.theverge.com"/>
+      <outline type="rss" text="GSMArena News" title="GSMArena News"
+        xmlUrl="https://www.gsmarena.com/rss-news-reviews.php3" htmlUrl="https://www.gsmarena.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Mechanical Keyboards
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Mechanical Keyboards" title="Mechanical Keyboards">
+      <outline type="rss" text="r/MechanicalKeyboards" title="r/MechanicalKeyboards"
+        xmlUrl="https://www.reddit.com/r/MechanicalKeyboards/.rss" htmlUrl="https://www.reddit.com/r/MechanicalKeyboards"/>
+      <outline type="rss" text="r/olkb (QMK/Planck)" title="r/olkb (QMK/Planck)"
+        xmlUrl="https://www.reddit.com/r/olkb/.rss" htmlUrl="https://www.reddit.com/r/olkb"/>
+      <outline type="rss" text="r/ErgoMechKeyboards" title="r/ErgoMechKeyboards"
+        xmlUrl="https://www.reddit.com/r/ErgoMechKeyboards/.rss" htmlUrl="https://www.reddit.com/r/ErgoMechKeyboards"/>
+      <outline type="rss" text="Switch and Click" title="Switch and Click"
+        xmlUrl="https://switchandclick.com/feed/" htmlUrl="https://switchandclick.com"/>
+      <outline type="rss" text="Keyboard University (Drop)" title="Keyboard University (Drop)"
+        xmlUrl="https://keyboarduniversity.com/feed/" htmlUrl="https://keyboarduniversity.com"/>
+      <outline type="rss" text="Keycult Journal" title="Keycult Journal"
+        xmlUrl="https://keycult.com/blogs/notes.atom" htmlUrl="https://keycult.com/blogs/notes"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Firearms & Competitive Shooting
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Firearms &amp; Competitive Shooting" title="Firearms &amp; Competitive Shooting">
+      <outline type="rss" text="The Truth About Guns" title="The Truth About Guns"
+        xmlUrl="https://www.thetruthaboutguns.com/feed/" htmlUrl="https://www.thetruthaboutguns.com"/>
+      <outline type="rss" text="American Rifleman" title="American Rifleman"
+        xmlUrl="https://www.americanrifleman.org/rss/all-articles/" htmlUrl="https://www.americanrifleman.org"/>
+      <outline type="rss" text="Shooting Illustrated" title="Shooting Illustrated"
+        xmlUrl="https://www.shootingillustrated.com/rss/all-articles/" htmlUrl="https://www.shootingillustrated.com"/>
+      <outline type="rss" text="Guns.com News" title="Guns.com News"
+        xmlUrl="https://www.guns.com/feed" htmlUrl="https://www.guns.com"/>
+      <outline type="rss" text="AmmoLand" title="AmmoLand"
+        xmlUrl="https://www.ammoland.com/feed/" htmlUrl="https://www.ammoland.com"/>
+      <outline type="rss" text="r/competitionshooting" title="r/competitionshooting"
+        xmlUrl="https://www.reddit.com/r/competitionshooting/.rss" htmlUrl="https://www.reddit.com/r/competitionshooting"/>
+      <outline type="rss" text="r/longrange" title="r/longrange"
+        xmlUrl="https://www.reddit.com/r/longrange/.rss" htmlUrl="https://www.reddit.com/r/longrange"/>
+      <outline type="rss" text="r/USPSA" title="r/USPSA"
+        xmlUrl="https://www.reddit.com/r/USPSA/.rss" htmlUrl="https://www.reddit.com/r/USPSA"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Sci-Fi Books, Film & TV
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Sci-Fi &amp; Speculative Fiction" title="Sci-Fi &amp; Speculative Fiction">
+      <outline type="rss" text="Tor.com" title="Tor.com"
+        xmlUrl="https://www.tor.com/feed/" htmlUrl="https://www.tor.com"/>
+      <outline type="rss" text="io9" title="io9"
+        xmlUrl="https://gizmodo.com/c/io9/rss" htmlUrl="https://gizmodo.com/c/io9"/>
+      <outline type="rss" text="Locus Magazine" title="Locus Magazine"
+        xmlUrl="https://locusmag.com/feed/" htmlUrl="https://locusmag.com"/>
+      <outline type="rss" text="Strange Horizons" title="Strange Horizons"
+        xmlUrl="https://strangehorizons.com/feed/" htmlUrl="https://strangehorizons.com"/>
+      <outline type="rss" text="r/printSF" title="r/printSF"
+        xmlUrl="https://www.reddit.com/r/printSF/.rss" htmlUrl="https://www.reddit.com/r/printSF"/>
+      <outline type="rss" text="r/scifi" title="r/scifi"
+        xmlUrl="https://www.reddit.com/r/scifi/.rss" htmlUrl="https://www.reddit.com/r/scifi"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Home Video & Streaming Releases
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Home Video &amp; Releases" title="Home Video &amp; Releases">
+      <outline type="rss" text="Blu-ray.com New Releases" title="Blu-ray.com New Releases"
+        xmlUrl="https://www.blu-ray.com/rss/newreleases.php" htmlUrl="https://www.blu-ray.com"/>
+      <outline type="rss" text="Blu-ray.com News" title="Blu-ray.com News"
+        xmlUrl="https://www.blu-ray.com/rss/news.php" htmlUrl="https://www.blu-ray.com/news"/>
+      <outline type="rss" text="r/4kbluray" title="r/4kbluray"
+        xmlUrl="https://www.reddit.com/r/4kbluray/.rss" htmlUrl="https://www.reddit.com/r/4kbluray"/>
+      <outline type="rss" text="DVD Release Dates" title="DVD Release Dates"
+        xmlUrl="https://www.dvdsreleasedates.com/rss.php" htmlUrl="https://www.dvdsreleasedates.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Food Trends & Culture (not recipes)
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Food Culture &amp; Trends" title="Food Culture &amp; Trends">
+      <outline type="rss" text="Eater" title="Eater"
+        xmlUrl="https://www.eater.com/rss/index.xml" htmlUrl="https://www.eater.com"/>
+      <outline type="rss" text="Grub Street" title="Grub Street"
+        xmlUrl="https://www.grubstreet.com/rss/index.xml" htmlUrl="https://www.grubstreet.com"/>
+      <outline type="rss" text="First We Feast" title="First We Feast"
+        xmlUrl="https://firstwefeast.com/feed/" htmlUrl="https://firstwefeast.com"/>
+      <outline type="rss" text="Punch (Drinks)" title="Punch (Drinks)"
+        xmlUrl="https://punchdrink.com/feed/" htmlUrl="https://punchdrink.com"/>
+      <outline type="rss" text="The Counter (food journalism)" title="The Counter (food journalism)"
+        xmlUrl="https://thecounter.org/feed/" htmlUrl="https://thecounter.org"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Obsidian & Personal Productivity
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Obsidian &amp; Productivity" title="Obsidian &amp; Productivity">
+      <outline type="rss" text="Obsidian Blog" title="Obsidian Blog"
+        xmlUrl="https://obsidian.md/blog/rss.xml" htmlUrl="https://obsidian.md/blog"/>
+      <outline type="rss" text="r/ObsidianMD" title="r/ObsidianMD"
+        xmlUrl="https://www.reddit.com/r/ObsidianMD/.rss" htmlUrl="https://www.reddit.com/r/ObsidianMD"/>
+      <outline type="rss" text="Forte Labs" title="Forte Labs"
+        xmlUrl="https://fortelabs.com/feed/" htmlUrl="https://fortelabs.com"/>
+      <outline type="rss" text="Ness Labs" title="Ness Labs"
+        xmlUrl="https://nesslabs.com/feed" htmlUrl="https://nesslabs.com"/>
+      <outline type="rss" text="Tools and Toys" title="Tools and Toys"
+        xmlUrl="https://toolsandtoys.net/feed/" htmlUrl="https://toolsandtoys.net"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Science
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Science" title="Science">
+      <outline type="rss" text="Quanta Magazine" title="Quanta Magazine"
+        xmlUrl="https://www.quantamagazine.org/feed/" htmlUrl="https://www.quantamagazine.org"/>
+      <outline type="rss" text="Science News" title="Science News"
+        xmlUrl="https://www.sciencenews.org/feed" htmlUrl="https://www.sciencenews.org"/>
+      <outline type="rss" text="Ars Technica Science" title="Ars Technica Science"
+        xmlUrl="https://arstechnica.com/science/feed/" htmlUrl="https://arstechnica.com/science"/>
+      <outline type="rss" text="Space News" title="Space News"
+        xmlUrl="https://spacenews.com/feed/" htmlUrl="https://spacenews.com"/>
+      <outline type="rss" text="NASA Breaking News" title="NASA Breaking News"
+        xmlUrl="https://www.nasa.gov/rss/dyn/breaking_news.rss" htmlUrl="https://www.nasa.gov/news"/>
+      <outline type="rss" text="Phys.org" title="Phys.org"
+        xmlUrl="https://phys.org/rss-feed/breaking/" htmlUrl="https://phys.org"/>
+      <outline type="rss" text="New Scientist" title="New Scientist"
+        xmlUrl="https://www.newscientist.com/feed/home/" htmlUrl="https://www.newscientist.com"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Economics & Geopolitics
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Economics &amp; Geopolitics" title="Economics &amp; Geopolitics">
+      <outline type="rss" text="Marginal Revolution" title="Marginal Revolution"
+        xmlUrl="https://feeds.feedburner.com/MarginalRevolution" htmlUrl="https://marginalrevolution.com"/>
+      <outline type="rss" text="EconLib Blog" title="EconLib Blog"
+        xmlUrl="https://www.econlib.org/feed/" htmlUrl="https://www.econlib.org"/>
+      <outline type="rss" text="Calculated Risk" title="Calculated Risk"
+        xmlUrl="https://feeds.feedburner.com/calculatedrisk" htmlUrl="https://www.calculatedriskblog.com"/>
+      <outline type="rss" text="BBC World News" title="BBC World News"
+        xmlUrl="https://feeds.bbci.co.uk/news/world/rss.xml" htmlUrl="https://www.bbc.com/news/world"/>
+      <outline type="rss" text="Reuters World" title="Reuters World"
+        xmlUrl="https://feeds.reuters.com/reuters/worldNews" htmlUrl="https://www.reuters.com/world"/>
+      <outline type="rss" text="The Intercept" title="The Intercept"
+        xmlUrl="https://theintercept.com/feed/?rss" htmlUrl="https://theintercept.com"/>
+      <outline type="rss" text="Global Voices" title="Global Voices"
+        xmlUrl="https://globalvoices.org/feed/" htmlUrl="https://globalvoices.org"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Health & Medicine
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Health &amp; Medicine" title="Health &amp; Medicine">
+      <outline type="rss" text="STAT News" title="STAT News"
+        xmlUrl="https://www.statnews.com/feed/" htmlUrl="https://www.statnews.com"/>
+      <outline type="rss" text="NIH News Releases" title="NIH News Releases"
+        xmlUrl="https://www.nih.gov/news-events/news-releases/feed" htmlUrl="https://www.nih.gov/news-events"/>
+      <outline type="rss" text="Science Daily (Health)" title="Science Daily (Health)"
+        xmlUrl="https://www.sciencedaily.com/rss/health_medicine.xml" htmlUrl="https://www.sciencedaily.com/news/health_medicine"/>
+      <outline type="rss" text="Ars Technica Health" title="Ars Technica Health"
+        xmlUrl="https://arstechnica.com/health/feed/" htmlUrl="https://arstechnica.com/health"/>
+    </outline>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         Media Criticism & Journalism
+    ════════════════════════════════════════════════════════════════ -->
+    <outline text="Media &amp; Journalism" title="Media &amp; Journalism">
+      <outline type="rss" text="Nieman Lab" title="Nieman Lab"
+        xmlUrl="https://www.niemanlab.org/feed/" htmlUrl="https://www.niemanlab.org"/>
+      <outline type="rss" text="Columbia Journalism Review" title="Columbia Journalism Review"
+        xmlUrl="https://www.cjr.org/feed" htmlUrl="https://www.cjr.org"/>
+      <outline type="rss" text="Poynter" title="Poynter"
+        xmlUrl="https://www.poynter.org/feed/" htmlUrl="https://www.poynter.org"/>
+    </outline>
+
+  </body>
+</opml>

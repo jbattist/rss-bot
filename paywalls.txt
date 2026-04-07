@@ -1,0 +1,77 @@
+# Paywall domain blocklist for rss-bot
+# One domain per line. Subdomains are matched automatically (e.g. "wsj.com" matches "www.wsj.com").
+# Lines starting with # are ignored.
+
+# --- Major newspapers ---
+nytimes.com
+wsj.com
+washingtonpost.com
+ft.com
+thetimes.co.uk
+thetimes.com
+telegraph.co.uk
+theaustralian.com.au
+afr.com
+latimes.com
+bostonglobe.com
+chicagotribune.com
+baltimoresun.com
+seattletimes.com
+
+# --- Magazines ---
+theatlantic.com
+newyorker.com
+economist.com
+vanityfair.com
+vogue.com
+esquire.com
+harpersbazaar.com
+foreignaffairs.com
+foreignpolicy.com
+newrepublic.com
+thenation.com
+nationalreview.com
+weeklystandard.com
+Commentary.com
+
+# --- Business & Finance ---
+bloomberg.com
+hbr.org
+barrons.com
+marketwatch.com
+fortune.com
+businessinsider.com
+inc.com
+fastcompany.com
+
+# --- Science & Academic ---
+nature.com
+science.org
+sciencemag.org
+cell.com
+nejm.org
+thelancet.com
+jamanetwork.com
+bmj.com
+ieee.org
+acm.org
+
+# --- Tech (soft paywalls or metered) ---
+technologyreview.com
+wired.com               # metered — uncomment if you hit the wall often
+# arstechnica.com       # generally no paywall, keep commented
+
+# --- General news (metered) ---
+theatlantic.com
+theguardian.com         # no hard paywall but aggressive donation nags — keep commented if you read it
+# apnews.com            # no paywall
+# reuters.com           # no paywall
+# bbc.com               # no paywall
+
+# --- Misc ---
+medium.com              # metered
+puck.news
+theinformation.com
+semafor.com
+axios.com               # some Pro content
+politico.com            # Pro content

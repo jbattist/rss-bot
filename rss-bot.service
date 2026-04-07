@@ -1,0 +1,19 @@
+[Unit]
+Description=rss-bot FreshRSS curation bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=joe
+WorkingDirectory=/home/joe/rss-bot
+ExecStart=/home/joe/rss-bot/venv/bin/python bot.py
+Restart=on-failure
+RestartSec=30
+
+# Log to journald — view with: journalctl -u rss-bot -f
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

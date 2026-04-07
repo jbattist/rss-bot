@@ -1,0 +1,19 @@
+# --- Secrets / personal config ---
+config.yaml
+
+# --- Generated / runtime state ---
+profile.json
+rss-bot.db
+suggestions.rss
+
+# --- Python ---
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# --- Misc ---
+*.log
+.DS_Store
