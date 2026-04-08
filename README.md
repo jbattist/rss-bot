@@ -6,7 +6,7 @@ A self-hosted RSS curation bot that sits on top of [FreshRSS](https://freshrss.o
 
 Three loops run continuously:
 
-- **Filter** — scores every new unread article 1-10 against your interest profile using Ollama. Articles below your threshold are marked read and disappear. Paywall domains and keyword blocklist are checked first (no LLM call wasted). Duplicate stories are detected by title similarity — the first source to publish wins, and each additional source that covers the same story increments a **heat counter** on the original (useful for future ranking).
+- **Filter** — scores every new unread article 1-10 against your interest profile using Ollama. Articles below your threshold are marked read and disappear. Paywall domains and keyword blocklist are checked first (no LLM call wasted). Duplicate stories are detected by title similarity — the first source to publish wins, and each additional source that covers the same story increments a **heat counter** on the original (useful for future ranking). Articles that score in the **marginal zone** (threshold − 2 to threshold − 1) are saved to a `marginal.rss` feed so you can review near-misses and star anything you want more of.
 - **Feedback** — starred articles boost topic weights; articles labeled `not-relevant` penalize them. The bot tunes itself over time.
 - **Discovery** — periodically analyzes your recent kept articles and surfaces adjacent topics you might not be following yet, as a local RSS feed you can subscribe to in FreshRSS.
 
@@ -40,8 +40,10 @@ Edit `config.yaml` with your FreshRSS URL, credentials, and Ollama settings.
 **4. Create the `not-relevant` label in FreshRSS:**
 Settings → Labels → add a label named exactly `not-relevant`. Apply it to articles you want the bot to learn from negatively.
 
-**5. Subscribe to the suggestions feed in FreshRSS:**
-Once the bot is running, add `http://localhost:8765/suggestions.rss` as a subscription. Star a suggestion to add that topic to your profile.
+**5. Subscribe to the bot feeds in FreshRSS:**
+Once the bot is running, add these as subscriptions:
+- `http://localhost:8765/suggestions.rss` — adjacent topic suggestions (star to add to profile)
+- `http://localhost:8765/marginal.rss` — articles that almost made the cut (star to boost related topics)
 
 ## Running
 

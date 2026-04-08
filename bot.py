@@ -51,6 +51,7 @@ PROFILE_PATH = BASE_DIR / "profile.json"
 PAYWALLS_PATH = BASE_DIR / "paywalls.txt"
 DB_PATH = BASE_DIR / "rss-bot.db"
 SUGGESTIONS_PATH = BASE_DIR / "suggestions.rss"
+MARGINAL_PATH = BASE_DIR / "marginal.rss"
 
 # ---------------------------------------------------------------------------
 # Config & Profile
@@ -132,6 +133,14 @@ def init_db():
             topics   TEXT,
             ts       TEXT DEFAULT (datetime('now'))
         );
+
+        CREATE TABLE IF NOT EXISTS marginal_articles (
+            item_id  TEXT PRIMARY KEY,
+            title    TEXT,
+            url      TEXT,
+            score    INTEGER,
+            ts       TEXT DEFAULT (datetime('now'))
+        );
     """)
     conn.commit()
     # Migrate: add heat column if this is an existing DB
@@ -141,7 +150,6 @@ def init_db():
     except sqlite3.OperationalError:
         pass  # column already exists
     conn.close()
-
 
 def _db() -> sqlite3.Connection:
     conn = sqlite3.connect(DB_PATH)
@@ -255,6 +263,25 @@ def save_feedback_item(item_id: str, signal: str, topics: list):
             (item_id, signal, json.dumps(topics)),
         )
         conn.commit()
+
+
+def save_marginal_article(item_id: str, title: str, url: str, score: int):
+    with _db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO marginal_articles (item_id, title, url, score) VALUES (?, ?, ?, ?)",
+            (item_id, title, url, score),
+        )
+        conn.commit()
+
+
+def get_recent_marginal_articles(limit: int = 200) -> list[dict]:
+    with _db() as conn:
+        rows = conn.execute(
+            "SELECT item_id, title, url, score FROM marginal_articles "
+            "ORDER BY score DESC, ts DESC LIMIT ?",
+            (limit,),
+        ).fetchall()
+    return [{"item_id": r["item_id"], "title": r["title"], "url": r["url"], "score": r["score"]} for r in rows]
 
 
 # ---------------------------------------------------------------------------
@@ -507,17 +534,54 @@ class SuggestionsFeedServer:
             tree.write(f, xml_declaration=True, encoding="utf-8")
         log.info(f"Suggestions feed updated ({len(suggestions)} items) → {SUGGESTIONS_PATH}")
 
+    def write_marginal_feed(self, articles: list[dict]):
+        rss = ET.Element("rss")
+        rss.set("version", "2.0")
+        ch = ET.SubElement(rss, "channel")
+        ET.SubElement(ch, "title").text = "RSS Bot: Marginal Articles"
+        ET.SubElement(ch, "link").text = f"http://127.0.0.1:{self.port}/marginal.rss"
+        ET.SubElement(ch, "description").text = (
+            "Articles that almost made it — scored just below your relevance threshold. "
+            "Star anything you want more of."
+        )
+        ET.SubElement(ch, "lastBuildDate").text = _rfc822_now()
+
+        for a in articles:
+            score = a.get("score", 0)
+            title = a.get("title", "Untitled")
+            url = a.get("url", "")
+            item = ET.SubElement(ch, "item")
+            ET.SubElement(item, "title").text = f"[{score}/10] {title}"
+            desc = f"<b>Relevance score:</b> {score}/10 — just below your threshold.<br/><br/>"
+            desc += "<i>Star this in FreshRSS to boost related topics.</i>"
+            ET.SubElement(item, "description").text = desc
+            if url:
+                ET.SubElement(item, "link").text = url
+            ET.SubElement(item, "guid").text = f"rss-bot-marginal-{a.get('item_id', title)}"
+            ET.SubElement(item, "pubDate").text = _rfc822_now()
+            ET.SubElement(item, "category").text = "rss-bot-marginal"
+
+        tree = ET.ElementTree(rss)
+        ET.indent(tree, space="  ")
+        with open(MARGINAL_PATH, "wb") as f:
+            tree.write(f, xml_declaration=True, encoding="utf-8")
+        log.info(f"Marginal feed updated ({len(articles)} items) → {MARGINAL_PATH}")
+
     def start(self):
-        feed_path = SUGGESTIONS_PATH  # capture for closure
+        served_paths = {
+            "/suggestions.rss": SUGGESTIONS_PATH,
+            "/marginal.rss": MARGINAL_PATH,
+        }
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
-                if self.path != "/suggestions.rss":
+                path = served_paths.get(self.path)
+                if not path:
                     self.send_response(404)
                     self.end_headers()
                     return
                 try:
-                    data = feed_path.read_bytes()
+                    data = path.read_bytes()
                     self.send_response(200)
                     self.send_header("Content-Type", "application/rss+xml; charset=utf-8")
                     self.send_header("Content-Length", str(len(data)))
@@ -534,8 +598,8 @@ class SuggestionsFeedServer:
         t = threading.Thread(target=self._server.serve_forever, daemon=True)
         t.start()
         log.info(
-            f"Suggestions feed server listening on "
-            f"http://127.0.0.1:{self.port}/suggestions.rss"
+            f"Feed server listening on http://127.0.0.1:{self.port}/ "
+            f"(suggestions.rss, marginal.rss)"
         )
 
 
@@ -583,11 +647,14 @@ def run_filter_loop(
     config: dict,
     profile: dict,
     paywalls: set[str],
+    suggestions_server: "SuggestionsFeedServer",
 ):
     log.info("--- Filter loop start ---")
     cfg_f = config.get("filter", {})
     blocklist = [kw.lower() for kw in cfg_f.get("keyword_blocklist", [])]
     threshold = config["ollama"]["relevance_threshold"]
+    marginal_depth = cfg_f.get("marginal_zone_depth", 2)
+    marginal_max = cfg_f.get("marginal_feed_max_items", 200)
     max_items = cfg_f.get("max_items_per_run", 50)
     max_age_days = cfg_f.get("skip_older_than_days", 7)
     profile_text = config["interests"]["profile"]
@@ -595,6 +662,7 @@ def run_filter_loop(
     to_mark_read: list[str] = []   # ids to mark read in FreshRSS
     db_records: list[tuple] = []   # (item_id, loop, action, score)
     kept_records: list[tuple] = [] # for kept_articles table
+    marginal_records: list[tuple] = []  # (item_id, title, url, score)
     processed = 0
     kept = 0
     filtered = 0
@@ -676,6 +744,8 @@ def run_filter_loop(
                     db_records.append((item_id, "filter", "low_score", score))
                     to_mark_read.append(item_id)
                     filtered += 1
+                    if score >= threshold - marginal_depth:
+                        marginal_records.append((item_id, title, url, score))
                 else:
                     log.info(f"SCORE {score:2d}/10  KEEP  {title[:65]}")
                     db_records.append((item_id, "filter", "kept", score))
@@ -696,9 +766,17 @@ def run_filter_loop(
         for rec in kept_records:
             save_kept_article(*rec)
 
+        for rec in marginal_records:
+            save_marginal_article(*rec)
+
+        # Rebuild marginal feed (always, so removals/cap take effect)
+        suggestions_server.write_marginal_feed(
+            get_recent_marginal_articles(limit=marginal_max)
+        )
+
         log.info(
             f"--- Filter loop done: {kept} kept, {filtered} filtered "
-            f"({len(to_mark_read)} marked read) ---"
+            f"({len(to_mark_read)} marked read, {len(marginal_records)} marginal) ---"
         )
 
     except Exception:
@@ -909,7 +987,7 @@ def main():
     if args.run_once:
         log.info("--run-once: running all loops once")
         profile = load_profile()
-        run_filter_loop(freshrss, ollama, config, profile, paywalls)
+        run_filter_loop(freshrss, ollama, config, profile, paywalls, suggestions_server)
         profile = load_profile()
         run_feedback_loop(freshrss, ollama, config, profile)
         profile = load_profile()
@@ -940,7 +1018,7 @@ def main():
         profile = load_profile()
         paywalls = load_paywalls()
 
-        run_filter_loop(freshrss, ollama, config, profile, paywalls)
+        run_filter_loop(freshrss, ollama, config, profile, paywalls, suggestions_server)
 
         if now - last_feedback >= feedback_secs:
             profile = load_profile()

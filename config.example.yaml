@@ -30,6 +30,8 @@ feedback:
 filter:
   max_items_per_run: 50                # cap per loop run to avoid hammering Ollama on a big backlog
   skip_older_than_days: 7              # ignore articles older than this (raise to 30 on first run)
+  marginal_zone_depth: 2               # articles scoring threshold-N to threshold-1 go to marginal feed
+  marginal_feed_max_items: 200         # cap on marginal feed size
 
   keyword_blocklist:
     # --- Political noise (add/remove to taste) ---
