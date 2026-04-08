@@ -122,6 +122,7 @@ def init_db():
             summary  TEXT,
             url      TEXT,
             score    INTEGER,
+            heat     INTEGER DEFAULT 1,
             ts       TEXT DEFAULT (datetime('now'))
         );
 
@@ -133,6 +134,12 @@ def init_db():
         );
     """)
     conn.commit()
+    # Migrate: add heat column if this is an existing DB
+    try:
+        conn.execute("ALTER TABLE kept_articles ADD COLUMN heat INTEGER DEFAULT 1")
+        conn.commit()
+    except sqlite3.OperationalError:
+        pass  # column already exists
     conn.close()
 
 
@@ -166,6 +173,59 @@ def save_kept_article(item_id: str, title: str, summary: str, url: str, score: i
         conn.execute(
             "INSERT OR IGNORE INTO kept_articles (item_id, title, summary, url, score) VALUES (?, ?, ?, ?, ?)",
             (item_id, title, summary, url, score),
+        )
+        conn.commit()
+
+
+# ---------------------------------------------------------------------------
+# Deduplication
+# ---------------------------------------------------------------------------
+
+# Words that carry no topic signal — stripped before similarity comparison
+_STOPWORDS = {
+    'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
+    'should', 'to', 'of', 'in', 'on', 'at', 'for', 'with', 'by', 'from',
+    'and', 'but', 'or', 'not', 'its', 'this', 'that', 'as', 'it', 'into',
+    'over', 'after', 'about', 'new', 'says', 'said', 'report', 'reports',
+    'how', 'why', 'what', 'when', 'who', 'just', 'more', 'than', 'now',
+}
+
+
+def _title_words(title: str) -> set:
+    return set(re.sub(r'[^a-z0-9\s]', '', title.lower()).split()) - _STOPWORDS
+
+
+def _title_similarity(a: str, b: str) -> float:
+    """Jaccard similarity on significant title words."""
+    wa, wb = _title_words(a), _title_words(b)
+    if not wa or not wb:
+        return 0.0
+    return len(wa & wb) / len(wa | wb)
+
+
+def find_similar_kept(
+    title: str, days: int = 3, threshold: float = 0.4
+) -> Optional[tuple]:
+    """Return (item_id, title, heat) of a similar kept article within `days`, or None."""
+    since = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d %H:%M:%S")
+    with _db() as conn:
+        rows = conn.execute(
+            "SELECT item_id, title, COALESCE(heat, 1) as heat FROM kept_articles "
+            "WHERE ts > ? ORDER BY ts ASC",
+            (since,),
+        ).fetchall()
+    for row in rows:
+        if _title_similarity(title, row["title"]) >= threshold:
+            return (row["item_id"], row["title"], row["heat"])
+    return None
+
+
+def increment_heat(item_id: str):
+    with _db() as conn:
+        conn.execute(
+            "UPDATE kept_articles SET heat = COALESCE(heat, 1) + 1 WHERE item_id = ?",
+            (item_id,),
         )
         conn.commit()
 
@@ -590,7 +650,22 @@ def run_filter_loop(
                     processed += 1
                     continue
 
-                # 3. Ollama relevance score
+                # 3. Dedup — skip if a similar article was kept in the last 3 days
+                similar = find_similar_kept(title)
+                if similar:
+                    orig_id, orig_title, orig_heat = similar
+                    increment_heat(orig_id)
+                    log.info(
+                        f"DUPE     [heat:{orig_heat + 1}] {title[:50]}"
+                        f"  ≈  {orig_title[:35]}"
+                    )
+                    db_records.append((item_id, "filter", "duplicate", None))
+                    to_mark_read.append(item_id)
+                    filtered += 1
+                    processed += 1
+                    continue
+
+                # 4. Ollama relevance score
                 score = ollama.score_relevance(
                     title, summary, profile_text, profile["topic_weights"], threshold
                 )

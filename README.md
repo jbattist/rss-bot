@@ -6,7 +6,7 @@ A self-hosted RSS curation bot that sits on top of [FreshRSS](https://freshrss.o
 
 Three loops run continuously:
 
-- **Filter** — scores every new unread article 1-10 against your interest profile using Ollama. Articles below your threshold are marked read and disappear. Paywall domains and keyword blocklist are checked first (no LLM call wasted).
+- **Filter** — scores every new unread article 1-10 against your interest profile using Ollama. Articles below your threshold are marked read and disappear. Paywall domains and keyword blocklist are checked first (no LLM call wasted). Duplicate stories are detected by title similarity — the first source to publish wins, and each additional source that covers the same story increments a **heat counter** on the original (useful for future ranking).
 - **Feedback** — starred articles boost topic weights; articles labeled `not-relevant` penalize them. The bot tunes itself over time.
 - **Discovery** — periodically analyzes your recent kept articles and surfaces adjacent topics you might not be following yet, as a local RSS feed you can subscribe to in FreshRSS.
 
