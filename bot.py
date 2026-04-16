@@ -655,7 +655,8 @@ def run_filter_loop(
     threshold = config["ollama"]["relevance_threshold"]
     marginal_depth = cfg_f.get("marginal_zone_depth", 2)
     marginal_max = cfg_f.get("marginal_feed_max_items", 200)
-    max_items = cfg_f.get("max_items_per_run", 50)
+    max_items = cfg_f.get("max_items_per_run", 300)
+    max_per_feed = cfg_f.get("max_items_per_feed", 50)
     max_age_days = cfg_f.get("skip_older_than_days", 7)
     profile_text = config["interests"]["profile"]
 
@@ -663,6 +664,7 @@ def run_filter_loop(
     db_records: list[tuple] = []   # (item_id, loop, action, score)
     kept_records: list[tuple] = [] # for kept_articles table
     marginal_records: list[tuple] = []  # (item_id, title, url, score)
+    feed_counts: dict[str, int] = {}   # per-feed article count this run
     processed = 0
     kept = 0
     filtered = 0
@@ -684,6 +686,12 @@ def run_filter_loop(
                 item_id = item.get("id", "")
                 if not item_id or is_processed(item_id, "filter"):
                     continue
+
+                # Per-feed cap — rate-limit noisy feeds without permanently dropping articles
+                stream_id = (item.get("origin") or {}).get("streamId", "unknown")
+                if feed_counts.get(stream_id, 0) >= max_per_feed:
+                    continue  # leave unread; will be picked up next run
+                feed_counts[stream_id] = feed_counts.get(stream_id, 0) + 1
 
                 # Skip stale articles on startup / large backlog
                 if _published_days_ago(item) > max_age_days:
