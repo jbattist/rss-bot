@@ -390,7 +390,7 @@ class FreshRSSClient:
 
 class OllamaClient:
     def __init__(self, base_url: str, model: str):
-        self.url = base_url.rstrip("/") + "/api/generate"
+        self.url = base_url.rstrip("/") + "/v1/chat/completions"
         self.model = model
         self._session = requests.Session()
 
@@ -399,14 +399,14 @@ class OllamaClient:
             self.url,
             json={
                 "model": self.model,
-                "prompt": prompt,
+                "messages": [{"role": "user", "content": prompt}],
                 "stream": False,
-                "options": {"temperature": temperature},
+                "temperature": temperature,
             },
             timeout=90,
         )
         resp.raise_for_status()
-        return resp.json()["response"].strip()
+        return resp.json()["choices"][0]["message"]["content"].strip()
 
     def score_relevance(
         self,
