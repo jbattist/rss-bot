@@ -6,8 +6,11 @@ freshrss:
   not_relevant_label: "not-relevant"
 
 ollama:
-  url: "http://localhost:11434"        # Ollama API endpoint
-  model: "gemma4:e2b"                  # Any model available in your Ollama instance
+  url: "http://localhost:11434"        # Ollama or Bifrost LLM router endpoint
+  # If using Bifrost, set url to your Bifrost host (e.g. http://ollama-vm.home:8080)
+  # and prefix the model name with the backend, e.g. "ollama/gemma4:e2b"
+  # If pointing directly at Ollama, use the bare model name, e.g. "gemma4:e2b"
+  model: "ollama/gemma4:e2b"          # Any model available in your Ollama instance
   relevance_threshold: 6               # 1-10; articles scoring below this are filtered out
 
 # How often each loop runs

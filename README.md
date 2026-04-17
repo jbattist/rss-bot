@@ -13,8 +13,10 @@ Three loops run continuously:
 ## Requirements
 
 - FreshRSS instance with the GReader API enabled
-- Ollama running locally or on your LAN
+- Ollama running locally or on your LAN, **or** a Bifrost LLM router proxying Ollama
 - Python 3.10+
+
+> **Bifrost / LLM router note**: the bot uses the OpenAI-compatible API (`/v1/chat/completions`). If routing via Bifrost, set `url` to your Bifrost endpoint and prefix the model name with the backend, e.g. `ollama/gemma4:e2b`. If hitting Ollama directly on port 11434, use the bare model name.
 
 ## Setup
 
