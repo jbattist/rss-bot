@@ -394,7 +394,7 @@ class OllamaClient:
         self.model = model
         self._session = requests.Session()
 
-    def _generate(self, prompt: str, temperature: float = 0.1) -> str:
+    def _generate(self, prompt: str, temperature: float = 0.1, max_tokens: int = 512) -> str:
         resp = self._session.post(
             self.url,
             json={
@@ -402,6 +402,7 @@ class OllamaClient:
                 "messages": [{"role": "user", "content": prompt}],
                 "stream": False,
                 "temperature": temperature,
+                "max_tokens": max_tokens,
             },
             timeout=90,
         )
@@ -450,8 +451,8 @@ class OllamaClient:
             "JSON:"
         )
         try:
-            result = self._generate(prompt, temperature=0.3)
-            match = re.search(r"\[.*?\]", result, re.DOTALL)
+            result = self._generate(prompt, temperature=0.3, max_tokens=256)
+            match = re.search(r"\[.*\]", result, re.DOTALL)
             if match:
                 return json.loads(match.group(0))
         except Exception as e:
@@ -477,8 +478,8 @@ class OllamaClient:
             "JSON:"
         )
         try:
-            result = self._generate(prompt, temperature=0.5)
-            match = re.search(r"\[.*?\]", result, re.DOTALL)
+            result = self._generate(prompt, temperature=0.5, max_tokens=1024)
+            match = re.search(r"\[.*\]", result, re.DOTALL)
             if match:
                 return json.loads(match.group(0))
         except Exception as e:
