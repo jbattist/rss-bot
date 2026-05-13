@@ -31,8 +31,9 @@ feedback:
   min_topic_weight: 0.1
 
 filter:
-  max_items_per_run: 300               # max articles to process per filter loop run
-  max_items_per_feed: 50               # max articles from any single feed per run (prevents noisy feeds dominating)
+  max_items_per_run: 300               # max unread articles to consider per filter loop run
+  max_items_per_category: 50           # max articles from any single FreshRSS category per run
+  # max_items_per_feed is also accepted as a legacy alias for max_items_per_category
   skip_older_than_days: 7              # ignore articles older than this (raise to 30 on first run)
   marginal_zone_depth: 2               # articles scoring threshold-N to threshold-1 go to marginal feed
   marginal_feed_max_items: 300         # cap on marginal feed size

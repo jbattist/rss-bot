@@ -351,13 +351,28 @@ class FreshRSSClient:
 
     # --- API methods ---
 
-    def get_unread_items(self, count: int = 100, continuation: str = None) -> dict:
+    def get_unread_items(self, count: int = 100, continuation: Optional[str] = None) -> dict:
         params = {"xt": "user/-/state/com.google/read", "n": count, "output": "json"}
         if continuation:
             params["c"] = continuation
         return self._get(
             "/reader/api/0/stream/contents/user/-/state/com.google/reading-list", params
         )
+
+    def get_feed_categories(self) -> dict[str, str]:
+        """Return a feed stream id → FreshRSS category label map."""
+        data = self._get("/reader/api/0/subscription/list", {"output": "json"})
+        categories: dict[str, str] = {}
+        for sub in data.get("subscriptions") or []:
+            stream_id = sub.get("id")
+            if not stream_id:
+                continue
+            sub_categories = sub.get("categories") or []
+            if sub_categories:
+                categories[stream_id] = sub_categories[0].get("label") or "uncategorized"
+            else:
+                categories[stream_id] = "uncategorized"
+        return categories
 
     def get_starred_items(self, count: int = 50) -> dict:
         return self._get(
@@ -657,42 +672,52 @@ def run_filter_loop(
     marginal_depth = cfg_f.get("marginal_zone_depth", 2)
     marginal_max = cfg_f.get("marginal_feed_max_items", 200)
     max_items = cfg_f.get("max_items_per_run", 300)
-    max_per_feed = cfg_f.get("max_items_per_feed", 50)
+    # FreshRSS groups feeds into categories. Treat the historical
+    # max_items_per_feed setting as a category cap unless an explicit
+    # max_items_per_category is present, matching the documented intent of
+    # preventing one noisy category from dominating a run.
+    max_per_category = cfg_f.get("max_items_per_category", cfg_f.get("max_items_per_feed", 50))
     max_age_days = cfg_f.get("skip_older_than_days", 7)
     profile_text = config["interests"]["profile"]
+    feed_categories = freshrss.get_feed_categories()
 
     to_mark_read: list[str] = []   # ids to mark read in FreshRSS
     db_records: list[tuple] = []   # (item_id, loop, action, score)
     kept_records: list[tuple] = [] # for kept_articles table
     marginal_records: list[tuple] = []  # (item_id, title, url, score)
-    feed_counts: dict[str, int] = {}   # per-feed article count this run
+    category_counts: dict[str, int] = {}  # per-category article count this run
+    seen = 0
     processed = 0
     kept = 0
     filtered = 0
+    category_capped = 0
 
     try:
         continuation = None
-        while processed < max_items:
+        while seen < max_items:
             data = freshrss.get_unread_items(
-                count=min(100, max_items - processed), continuation=continuation
+                count=min(100, max_items - seen), continuation=continuation
             )
             items = data.get("items") or []
             if not items:
                 break
 
             for item in items:
-                if processed >= max_items:
+                if seen >= max_items:
                     break
+                seen += 1
 
                 item_id = item.get("id", "")
                 if not item_id or is_processed(item_id, "filter"):
                     continue
 
-                # Per-feed cap — rate-limit noisy feeds without permanently dropping articles
+                # Per-category cap — rate-limit noisy FreshRSS categories without permanently dropping articles
                 stream_id = (item.get("origin") or {}).get("streamId", "unknown")
-                if feed_counts.get(stream_id, 0) >= max_per_feed:
+                category = feed_categories.get(stream_id, "uncategorized")
+                if category_counts.get(category, 0) >= max_per_category:
+                    category_capped += 1
                     continue  # leave unread; will be picked up next run
-                feed_counts[stream_id] = feed_counts.get(stream_id, 0) + 1
+                category_counts[category] = category_counts.get(category, 0) + 1
 
                 # Skip stale articles on startup / large backlog
                 if _published_days_ago(item) > max_age_days:
@@ -785,7 +810,9 @@ def run_filter_loop(
 
         log.info(
             f"--- Filter loop done: {kept} kept, {filtered} filtered "
-            f"({len(to_mark_read)} marked read, {len(marginal_records)} marginal) ---"
+            f"({len(to_mark_read)} marked read, {len(marginal_records)} marginal, "
+            f"{category_capped} category-capped, {processed}/{max_items} processed, "
+            f"{seen} considered) ---"
         )
 
     except Exception:
