@@ -797,6 +797,10 @@ def run_filter_loop(
         if db_records:
             mark_processed_batch(db_records)
 
+        overflow_marked, visible_kept, unread_scanned = enforce_unread_caps(
+            freshrss, feed_categories, max_items, max_per_category
+        )
+
         for rec in kept_records:
             save_kept_article(*rec)
 
@@ -812,11 +816,69 @@ def run_filter_loop(
             f"--- Filter loop done: {kept} kept, {filtered} filtered "
             f"({len(to_mark_read)} marked read, {len(marginal_records)} marginal, "
             f"{category_capped} category-capped, {processed}/{max_items} processed, "
-            f"{seen} considered) ---"
+            f"{seen} considered, {overflow_marked} overflow-marked, "
+            f"{visible_kept}/{unread_scanned} visible kept/scanned) ---"
         )
 
     except Exception:
         log.exception("Filter loop error")
+
+
+def enforce_unread_caps(
+    freshrss: FreshRSSClient,
+    feed_categories: dict[str, str],
+    max_total: int,
+    max_per_category: int,
+    scan_limit: int = 5000,
+) -> tuple[int, int, int]:
+    """Mark overflow unread items read so clients see at most the configured caps.
+
+    FreshRSS clients display the whole unread reading-list, not just items the
+    filter loop processed this run. Keep the newest API-returned unread items
+    while enforcing both a global cap and a per-category cap; mark the rest read.
+    """
+    kept_total = 0
+    seen_total = 0
+    category_counts: dict[str, int] = {}
+    overflow_ids: list[str] = []
+    continuation = None
+
+    while seen_total < scan_limit:
+        data = freshrss.get_unread_items(
+            count=min(100, scan_limit - seen_total), continuation=continuation
+        )
+        items = data.get("items") or []
+        if not items:
+            break
+
+        for item in items:
+            seen_total += 1
+            item_id = item.get("id", "")
+            if not item_id:
+                continue
+
+            stream_id = (item.get("origin") or {}).get("streamId", "unknown")
+            category = feed_categories.get(stream_id, "uncategorized")
+            if kept_total >= max_total or category_counts.get(category, 0) >= max_per_category:
+                overflow_ids.append(item_id)
+                continue
+
+            kept_total += 1
+            category_counts[category] = category_counts.get(category, 0) + 1
+
+        continuation = data.get("continuation")
+        if not continuation:
+            break
+
+    if overflow_ids:
+        freshrss.mark_as_read(overflow_ids)
+        mark_processed_batch([(item_id, "filter", "overflow_cap", None) for item_id in overflow_ids])
+        log.info(
+            f"Unread cap enforcement marked {len(overflow_ids)} overflow items read "
+            f"({kept_total} kept visible, {seen_total} scanned)"
+        )
+
+    return len(overflow_ids), kept_total, seen_total
 
 
 # ---------------------------------------------------------------------------
